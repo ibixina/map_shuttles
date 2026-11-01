@@ -1,0 +1,8 @@
+name = "shuttle-map-live"
+main = "live-proxy.mjs"
+# 2024-09-02 or later is needed: CDTA's feed is on port 8080, and older Workers ignore custom ports.
+compatibility_date = "2025-01-01"
+
+[vars]
+# Set this to your site, e.g. "https://yourname.github.io", so only it can use this relay.
+ALLOWED_ORIGINS = "*"

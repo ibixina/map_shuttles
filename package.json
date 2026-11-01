@@ -1,0 +1,32 @@
+{
+  "name": "shuttle-map",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "data": "node scripts/build-data.mjs",
+    "build": "tsc --noEmit && vite build",
+    "start": "node scripts/serve-local.mjs",
+    "test": "vitest run",
+    "test:e2e": "node tests/e2e/smoke.mjs",
+    "places": "node scripts/build-places.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "^6.16.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "fflate": "^0.8.3",
+    "gtfs-realtime-bindings": "^2.2.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

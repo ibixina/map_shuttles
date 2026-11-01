@@ -1,0 +1,57 @@
+# Builds the site and publishes it to GitHub Pages: on every push, and daily, so
+# schedule changes from CDTA and the shuttle service are picked up without anyone
+# having to do anything.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Refresh schedule data
+        run: npm run data
+
+      # Keeps the last good data in the repo, and the monthly stamp in meta.json keeps
+      # GitHub from disabling this schedule after 60 days without activity.
+      - name: Save data changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          git diff --cached --quiet || (git commit -m "Update schedule data" && git push)
+
+      - run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Your relay's address, under Settings > Secrets and variables > Actions > Variables.
+          # Without it the site still works, showing schedules but no live buses.
+          VITE_LIVE_URL: ${{ vars.LIVE_URL }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - uses: actions/deploy-pages@v4
