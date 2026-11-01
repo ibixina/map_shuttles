@@ -5,4 +5,4 @@ compatibility_date = "2025-01-01"
 
 [vars]
 # Set this to your site, e.g. "https://yourname.github.io", so only it can use this relay.
-ALLOWED_ORIGINS = "*"
+ALLOWED_ORIGINS = "https://ibixina.github.io"
